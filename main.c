@@ -1,6 +1,8 @@
 #include "menu.h"
 
 int main() {
-  mostrarMenu();
+  tListaProds *listaProds;
+  inicializarLista(&listaProds);
+  mostrarMenu(&listaProds);
   return 0;
 }
