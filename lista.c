@@ -85,7 +85,7 @@ void insertarProdEnFrente(tListaProds **pLista, tProducto pDatosProd) {
     tListaProds *nuevoProd = (tListaProds *) malloc(sizeof(tListaProds));
     nuevoProd->datosProd = pDatosProd;
     nuevoProd->siguiente = *pLista;
-    (*pLista) = nuevoProd;
+    (*pLista)->siguiente = nuevoProd;
     printf("Nuevo producto ingresado en el frente de la lista!\n");
   }
 }
@@ -138,80 +138,6 @@ void insertarEnK(tListaProds **pLista, tProducto pDatosProd, int k) {
   }
 }
 
-void agregarProdFinal(tListaProds **pLista, tProducto pDatosProd) {
-  if (listaVacia(*pLista)) {
-    printf("La lista de productos esta vacia. Los datos ingresados"
-           " corresponderan al primer producto.\n");
-    agregarPrimerProducto(pLista, pDatosProd);
-  } else {
-    tListaProds *agregarFinal, *recorrerLista;
-    recorrerLista = (*pLista);
-
-    while (recorrerLista->siguiente != NULL) {
-      recorrerLista = recorrerLista->siguiente;
-    }
-
-    agregarFinal = (tListaProds *) malloc(sizeof(tListaProds));
-    agregarFinal->datosProd = pDatosProd;
-    agregarFinal->siguiente = NULL;
-    recorrerLista->siguiente = agregarFinal;
-  }
-}
-
-// se muestra un submenu con las opciones para agregar productos
-void mostrarOpcionesAgregarProd() {
-  printf("\nElija la operacion de agregado a realizar:\n");
-  // elegir entre frente o primer posicion de la lista como mensaje
-  printf("1. En el frente de la lista.\n");
-  printf("2. En k-posicion de la lista.\n");
-  // elegir entre final o ultima posicion
-  printf("3. En el final de la lista.\n");
-  printf("4. Cancelar operacion y volver al menu principal.\n");
-}
-
-int ingresoK() {
-  int kLocal;
-
-  printf("Ingrese un valor para k: ");
-  scanf(" %d", &kLocal);
-
-  return kLocal;
-}
-
-void agregarNuevoProd(tListaProds **pLista, tProducto pDatosProd) {
-  if (listaVacia(*pLista)) {
-    printf("\nLa lista de productos esta vacia. Los datos ingresados"
-           " corresponderan al primer producto de la lista.\n");
-    agregarPrimerProducto(pLista, pDatosProd);
-  } else {
-    int opcion;
-    do {
-      mostrarOpcionesAgregarProd();
-      printf("Ingrese la operacion: ");
-      scanf(" %d", &opcion);
-      if ((opcion <= 0) || (opcion >= 5)) {
-        printf("El valor ingresado no corresponde a ninguna de las operaciones"
-               " enumeradas. Intente de nuevo.\n");
-      }
-    }while ((opcion <= 0) || (opcion >= 5));
-    switch (opcion) {
-      case 1:
-        insertarProdEnFrente(pLista, pDatosProd);
-        break;
-      case 2:
-        int k = ingresoK();
-        insertarEnK(pLista, pDatosProd, k);
-        break;
-      case 3:
-        agregarProdFinal(pLista, pDatosProd);
-        break;
-      case 4:
-        printf("Volviendo al menu principal...\n");
-        return;
-    }
-  }
-}
-
 // Funcion auxiliar para mostrar el nombre de la categoria
 // recibe el valor de la categoria como argumento y lo compara con los
 // casos del switch
@@ -242,15 +168,20 @@ void mostrarListaProds(tListaProds *pLista) {
   if (listaVacia(pLista)) {
     printf("La lista de productos esta vacia. No hay nada que mostrar.\n");
   } else {
-    tListaProds *recorrerLista = pLista;
+    // renombrar variable auxiliar
+    tListaProds *aux = pLista;
     printf("\n\n === Mostrando Lista de Productos ===\n\n");
-    while (recorrerLista != NULL) {
-      printf("Nombre del Producto: %s\n", recorrerLista->datosProd.nombre);
-      printf("Precio del producto: %.2f\n", recorrerLista->datosProd.precio);
+    while (aux != NULL) {
+      printf("Nombre del Producto: %s\n", pLista->datosProd.nombre);
+      printf("Precio del producto: %.2f\n", pLista->datosProd.precio);
       printf("Categoria del producto: %s\n",
-             mostrarCategoria(recorrerLista->datosProd.categoria));
+             mostrarCategoria(pLista->datosProd.categoria));
       printf("\n");
-      recorrerLista = recorrerLista->siguiente;
+      aux = aux->siguiente;
     }
   }
+}
+
+int main() {
+  return 0;
 }
