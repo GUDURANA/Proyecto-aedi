@@ -1,13 +1,23 @@
+#include "lista.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
-void mostrarOpcionesMenu();
-void mostrarMenu();
+bool confirmar() {
+  char respuesta;
 
-bool confirmar();
+  do {
+    printf("¿Desea continuar la ejecucion del programa? S/N: ");
+    scanf(" %c", &respuesta);
+
+    respuesta = tolower(respuesta); // Se convierte en minuscula la respuesta
+  } while ((respuesta != 's') && (respuesta != 'n'));
+
+  // Se usa un ternario para evaluar que valor devolver
+  return (respuesta == 's') ? true : false;
+}
 
 void mostrarOpcionesMenu() {
   printf("\n*** Bienvenido al programa ***\n");
@@ -16,12 +26,13 @@ void mostrarOpcionesMenu() {
 
   printf("1. Agregar producto al stock.\n");
   printf("2. Eliminar producto del stock.\n");
+  printf("3. Mostrar lista de productos.\n");
   printf("3. Crear Informe del stock.\n");
   printf("4. Mostrar Informe del stock.\n");
-  printf("xx. Salir del menu y terminar ejecucion del programa.\n");
+  printf("5. Salir del menu y terminar ejecucion del programa.\n");
 }
 
-void mostrarMenu() {
+void mostrarMenu(tListaProds **pLista) {
   int opcion;
   bool continuar = true;
 
@@ -32,31 +43,20 @@ void mostrarMenu() {
 
     switch (opcion) {
     case 1:
-
+      tProducto datos = ingresoDatosProd();
+      agregarNuevoProd(pLista, datos);
       break;
-    case 2:
-      break;
+    // case 2:
+    //   break;
     case 3:
+      mostrarListaProds(*pLista);
       break;
-    case 4:
-      break;
+    // case 4:
+    //   break;
     case 5:
-      break;
+      printf("Terminando ejecucion del programa...\n");
+      continuar = false;
     }
     continuar = confirmar();
   } while (continuar);
-}
-
-bool confirmar() {
-  char respuesta;
-
-  do {
-    printf("¿Desea continuar la ejecucion del programa? S/N");
-    scanf(" %c", &respuesta);
-
-    respuesta = tolower(respuesta); // Se convierte en minuscula la respuesta
-  } while ((respuesta != 's') && (respuesta != 'n'));
-
-  // Se usa un ternario para evaluar que valor devolver
-  return (respuesta == 's') ? true : false;
 }
