@@ -44,6 +44,7 @@ void mostrarMenu(tListaProds **pLista) {
     printf("Elija la operacion a realizar: ");
     scanf(" %d", &opcion);
 
+    // agregar do while que obligue a ingresar una opcion valida
     switch (opcion) {
     case 1:
       tProducto datos = ingresoDatosProd();

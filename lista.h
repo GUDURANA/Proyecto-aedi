@@ -9,13 +9,13 @@
 
 typedef char tString[MAX];
 
-// estructura para los tipos de productos validos
+// estructura para los tipos de ropa validos
 typedef enum {
-    ALIMENTOS, // 0
-    BEBIDAS, // 1
-    HERRAMIENTAS, // 2
-    ELECTRODOMESTICOS, // 3
-    ROPA // 4
+    PANTALONES, // 0
+    CAMISETAS, // 1
+    CALZADOS, // 2
+    ROPAINTERIOR, // 3
+    ACCESORIOS // 4
 } tCategoria;
 
 typedef struct {
@@ -30,7 +30,7 @@ typedef struct nodo {
     struct nodo *siguiente;
 } tListaProds;
 
-FILE * productos;
+FILE * ropa;
 
 bool listaVacia(tListaProds *pLista) {
   return pLista == NULL;
@@ -38,7 +38,7 @@ bool listaVacia(tListaProds *pLista) {
 
 void inicializarLista(tListaProds **pLista) {
   *pLista = NULL;
-  printf("Creando lista de productos en el stock...\n");
+  printf("Creando lista de ropa en el stock...\n");
 }
 
 tProducto ingresoDatosProd() {
@@ -48,10 +48,10 @@ tProducto ingresoDatosProd() {
   printf("Ingrese el nombre del producto: ");
   scanf(" %[^\n]", datos.nombre);
   printf("Ingrese el precio del producto: ");
-  scanf(" %f", &datos.precio);
+  scanf(" %f", &datos.precioUnidad);
   printf("Categorias validas:\n");
-  printf("0 - Alimentos | 1 - Bebidas | 2 - Herramientas | "
-         "3 - Electrodomesticos | 4 - Ropa\n");
+  printf("0 - Pantalones | 1 - Camisetas | 2 - Calzados | "
+         "3 - Ropa Interior | 4 - Accesorios\n");
   printf("Ingrese la categoria del producto: ");
   scanf(" %d", &opcionCategoria);
   printf("Ingrese la cantidad del producto: ");
@@ -101,7 +101,7 @@ void insertarEnK(tListaProds **pLista, tProducto pDatosProd, int k) {
   }
 
   if (listaVacia(*pLista)) {
-    printf("La lista de productos esta vacia. Los datos ingresados"
+    printf("La lista de ropa esta vacia. Los datos ingresados"
            " corresponderan al primer producto.\n");
     agregarPrimerProducto(pLista, pDatosProd);
   } else {
@@ -142,7 +142,7 @@ void insertarEnK(tListaProds **pLista, tProducto pDatosProd, int k) {
 
 void agregarProdFinal(tListaProds **pLista, tProducto pDatosProd) {
   if (listaVacia(*pLista)) {
-    printf("La lista de productos esta vacia. Los datos ingresados"
+    printf("La lista de ropa esta vacia. Los datos ingresados"
            " corresponderan al primer producto.\n");
     agregarPrimerProducto(pLista, pDatosProd);
   } else {
@@ -160,7 +160,7 @@ void agregarProdFinal(tListaProds **pLista, tProducto pDatosProd) {
   }
 }
 
-// se muestra un submenu con las opciones para agregar productos
+// se muestra un submenu con las opciones para agregar ropa
 void mostrarOpcionesAgregarProd() {
   printf("\nElija la operacion de agregado a realizar:\n");
   // elegir entre frente o primer posicion de la lista como mensaje
@@ -183,7 +183,7 @@ int ingresoK() {
 
 void agregarNuevoProd(tListaProds **pLista, tProducto pDatosProd) {
   if (listaVacia(*pLista)) {
-    printf("\nLa lista de productos esta vacia. Los datos ingresados"
+    printf("\nLa lista de ropa esta vacia. Los datos ingresados"
            " corresponderan al primer producto de la lista.\n");
     agregarPrimerProducto(pLista, pDatosProd);
   } else {
@@ -217,7 +217,7 @@ void agregarNuevoProd(tListaProds **pLista, tProducto pDatosProd) {
 
 void eliminarPrimero(tListaProds **pLista) {
   if (listaVacia(*pLista)) {
-    printf("\nLa lista de productos esta vacia. No hay nada que eliminar.\n");
+    printf("\nLa lista de ropa esta vacia. No hay nada que eliminar.\n");
   } else {
     tListaProds *delPrim = (*pLista);
     (*pLista) = (*pLista)->siguiente;
@@ -237,7 +237,7 @@ void eliminarEnK(tListaProds **pLista, int k) {
   }
 
   if (listaVacia(*pLista)) {
-    printf("\nLa lista de productos esta vacia. No hay nada que eliminar.\n");
+    printf("\nLa lista de ropa esta vacia. No hay nada que eliminar.\n");
   } else {
     tListaProds *delProd, *recorrerLista;
     recorrerLista = (*pLista);
@@ -272,7 +272,7 @@ void eliminarEnK(tListaProds **pLista, int k) {
 
 void eliminarUltimo(tListaProds **pLista) {
   if (listaVacia(*pLista)) {
-    printf("\nLa lista de productos esta vacia. No hay nada que eliminar.\n");
+    printf("\nLa lista de ropa esta vacia. No hay nada que eliminar.\n");
   } else if ((*pLista)->siguiente == NULL) {
     // en caso de que tenga un solo elemento se llama a eliminarPrimero
     eliminarPrimero(pLista);
@@ -341,19 +341,19 @@ void eliminarProd(tListaProds **pLista) {
 const char* mostrarCategoria(tCategoria pNombreCategoria) {
   switch (pNombreCategoria) {
     case 0:
-      return "Alimentos";
+      return "Pantalones";
       break;
     case 1:
-      return "Bebidas";
+      return "Camisetas";
       break;
     case 2:
-      return "Herramientas";
+      return "Calzados";
       break;
     case 3:
-      return "Electrodomesticos";
+      return "Ropa Interior";
       break;
     case 4:
-      return "Ropa";
+      return "Accesorios";
       break;
     default:
       return "CATEGORIA INVALIDA";
@@ -363,13 +363,14 @@ const char* mostrarCategoria(tCategoria pNombreCategoria) {
 
 void mostrarListaProds(tListaProds *pLista) {
   if (listaVacia(pLista)) {
-    printf("La lista de productos esta vacia. No hay nada que mostrar.\n");
+    printf("La lista de ropa esta vacia. No hay nada que mostrar.\n");
   } else {
     tListaProds *recorrerLista = pLista;
-    printf("\n\n === Mostrando Lista de Productos ===\n\n");
+    printf("\n\n === Mostrando Lista de ropa ===\n\n");
     while (recorrerLista != NULL) {
       printf("Nombre del Producto: %s\n", recorrerLista->datosProd.nombre);
-      printf("Precio del producto: %.2f\n", recorrerLista->datosProd.precio);
+      printf("Precio del producto: %.2f\n",
+          recorrerLista->datosProd.precioUnidad);
       printf("Categoria del producto: %s\n",
              mostrarCategoria(recorrerLista->datosProd.categoria));
       printf("\n");
@@ -381,25 +382,25 @@ void mostrarListaProds(tListaProds *pLista) {
 // se abre, guarda y cierra la lista todo en una sola funcion
 void guardarLista(tListaProds *pLista) {
   if (listaVacia(pLista)) {
-    printf("La lista de productos esta vacia. No hay nada que guardar."
+    printf("La lista de ropa esta vacia. No hay nada que guardar."
         " Regresando al menu principal.\n");
     return;
   }
 
-  productos = fopen("productos.dat", "ab");
-  if (productos == NULL) {
-    printf("\nNo se pudo abrir el archivo de la lista de productos.\n");
+  ropa = fopen("ropa.dat", "ab");
+  if (ropa == NULL) {
+    printf("\nNo se pudo abrir el archivo de la lista de ropa.\n");
     exit(EXIT_FAILURE);
   }
 
   tListaProds *recorrerLista = pLista;
 
   while (recorrerLista != NULL) {
-    fwrite(&(recorrerLista->datosProd), sizeof(tProducto), 1, productos);
+    fwrite(&(recorrerLista->datosProd), sizeof(tProducto), 1, ropa);
     recorrerLista = recorrerLista->siguiente;
   }
 
   printf("\nLista guardada en el archivo!\n");
 
-  fclose(productos);
+  fclose(ropa);
 }

@@ -14,11 +14,11 @@
 typedef char tString[MAX];
 
 typedef enum {
-  ALIMENTOS,         // 0
-  BEBIDAS,           // 1
-  HERRAMIENTAS,      // 2
-  ELECTRODOMESTICOS, // 3
-  ROPA               // 4
+  PANTALONES,         // 0
+  CAMISETAS,           // 1
+  CALZADOS,      // 2
+  ROPAINTERIOR, // 3
+  ACCESORIOS               // 4
 } tCategoria;
 
 typedef struct {
@@ -38,6 +38,7 @@ tProducto campoControlAnt;
 // globales
 int cantProdsCategoria;
 int totalUnidadesCategoria;
+int minimoReponer;
 
 // por producto
 float costoLote;
@@ -61,6 +62,9 @@ void inicializar() {
   printf("Nombre:\tCategoria:\tCantidad en el stock:\tPrecio x Unidad:\n");
 
   // Se inician los contadores y acumuladores globales en 0
+  cantProdsCategoria = 0;
+  totalUnidadesCategoria = 0;
+  minimoReponer = 0;
 }
 
 // Se usa la misma funcion auxiliar que en lista.h para mostrar el nombre
