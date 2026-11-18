@@ -20,7 +20,7 @@ typedef enum {
 
 typedef struct {
     tString nombre;
-    float precio;
+    float precioUnidad; // se ingresa el precio por unidad
     tCategoria categoria;
     int cantidad;
 } tProducto;
