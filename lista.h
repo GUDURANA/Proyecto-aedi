@@ -424,7 +424,8 @@ void guardarLista(tListaProds *pLista) {
     return;
   }
 
-  ropa = fopen("archivoRopas.dat", "ab");
+  // el archivo se sobreescribe en cada ejecucion del programa
+  ropa = fopen("archivoRopas.dat", "wb");
   if (ropa == NULL) {
     printf("\nNo se pudo abrir el archivo de la lista de ropa.\n");
     exit(EXIT_FAILURE);
