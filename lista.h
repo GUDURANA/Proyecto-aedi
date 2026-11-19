@@ -200,6 +200,7 @@ void agregarNuevoProd(tListaProds **pLista, tProducto pDatosProd) {
     agregarPrimerProducto(pLista, pDatosProd);
   } else {
     int opcion;
+    int k;
     do {
       mostrarOpcionesAgregarProd();
       printf("Ingrese la operacion: ");
@@ -214,7 +215,7 @@ void agregarNuevoProd(tListaProds **pLista, tProducto pDatosProd) {
         insertarProdEnFrente(pLista, pDatosProd);
         break;
       case 2:
-        int k = ingresoK();
+        k = ingresoK();
         insertarEnK(pLista, pDatosProd, k);
         break;
       case 3:
@@ -320,6 +321,7 @@ void eliminarProd(tListaProds **pLista) {
     return;
   } else {
     int opcion;
+    int k;
     do {
       mostrarOpcionesEliminarProd();
       printf("Ingrese la operacion: ");
@@ -334,7 +336,7 @@ void eliminarProd(tListaProds **pLista) {
         eliminarPrimero(pLista);
         break;
       case 2:
-        int k = ingresoK();
+        k = ingresoK();
         eliminarEnK(pLista, k);
         break;
       case 3:

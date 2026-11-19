@@ -38,7 +38,7 @@ void mostrarOpcionesMenu() {
 void mostrarMenu(tListaProds **pLista) {
   int opcion;
   bool continuar = true;
-
+  tProducto datos;
   do {
     mostrarOpcionesMenu();
     printf("Elija la operacion a realizar: ");
@@ -47,7 +47,7 @@ void mostrarMenu(tListaProds **pLista) {
     // agregar do while que obligue a ingresar una opcion valida
     switch (opcion) {
     case 1:
-      tProducto datos = ingresoDatosProd();
+      datos = ingresoDatosProd();
       agregarNuevoProd(pLista, datos);
       break;
     case 2:

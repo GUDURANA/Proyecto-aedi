@@ -1,3 +1,32 @@
+/*
+  este archivo se encarga de generar un informe con respecto a la lista
+  de ropa que se guardo en el archivo "archivoRopas.dat".
+
+  Posee:
+    acumuladores globales para:
+      los totales de ropas para:
+        - hombres
+        - mujeres
+        - unisex
+      totales por cada categoria:
+        - Pantalones
+        - Camisetas
+        - Calzados
+        - Ropa Interior
+        - Sombreros
+    contadores globales para:
+      el total de lotes (es decir, tandas de productos
+        introducidas en la lista) de prendas para:
+        - hombres
+        - mujeres
+        - unisex
+      el total de lotes de ropa para adultos y niños:
+    subacumuladores para:
+        total de ropa para adultos y niños en cada lote
+    subcontadores para:
+        cantidad de ropa por genero (hombres, mujeres, unisex)
+ */
+
 #include "lista.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,13 +57,13 @@ int cantTotalRopaH;
 int cantTotalRopaM;
 int cantTotalRopaX;
 
-int cantTotalLotesH;
-int cantTotalLotesM;
-int cantTotalLotesX;
-
 // contadores
 tProducto prodMinimo; // estructura que contiene los datos del producto con
                       // menor cantidad de unidades
+
+int cantTotalLotesH;
+int cantTotalLotesM;
+int cantTotalLotesX;
 
 int totalLotesAdulto;
 int totalLotesNinio;
@@ -52,6 +81,7 @@ int cantUnidadesRopaH;
 int cantUnidadesRopaM;
 int cantUnidadesRopaX;
 
+// acumuladores
 int totalRopaAdultoEnLote; // usan cantidad
 int totalRopaNinioEnLote;
 
