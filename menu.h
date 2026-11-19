@@ -1,4 +1,4 @@
-#include "lista.h"
+#include "corteControl.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -59,10 +59,16 @@ void mostrarMenu(tListaProds **pLista) {
     case 4:
       guardarLista(*pLista);
       break;
+    case 5:
+      realizarInforme();
+      break;
     case 6:
       printf("Terminando ejecucion del programa...\n");
       continuar = false;
       return;
+    default:
+      printf("El valor ingresado no corresponde a ninguna operacion.\n");
+      break;
     }
     continuar = confirmar();
   } while (continuar);

@@ -1,5 +1,6 @@
 // ARCHIVO DE PRUEBA PARA LAS FUNCIONES DE LA LISTA
 
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -11,23 +12,24 @@ typedef char tString[MAX];
 
 // estructura para los tipos de ropa validos
 typedef enum {
-    PANTALONES, // 0
-    CAMISETAS, // 1
-    CALZADOS, // 2
-    ROPAINTERIOR, // 3
-    ACCESORIOS // 4
+  PANTALONES,   // 0
+  CAMISETAS,    // 1
+  CALZADOS,     // 2
+  ROPAINTERIOR, // 3
+  SOMBREROS     // 4
 } tCategoria;
 
 typedef struct {
-    tString nombre;
-    float precioUnidad; // se ingresa el precio por unidad
-    tCategoria categoria;
-    int cantidad;
+  char genero;
+  float precioUnidad; // se ingresa el precio por unidad
+  tCategoria categoria;
+  int cantidad;
+  bool paraAdulto; // true: para adulto | false: para niño
 } tProducto;
 
 typedef struct nodo {
-    tProducto datosProd;
-    struct nodo *siguiente;
+  tProducto datosProd;
+  struct nodo *siguiente;
 } tListaProds;
 
 FILE * ropa;
@@ -44,18 +46,28 @@ void inicializarLista(tListaProds **pLista) {
 tProducto ingresoDatosProd() {
   tProducto datos;
   int opcionCategoria; // Necesario para el enum
+  char datoEdad;
 
-  printf("Ingrese el nombre del producto: ");
-  scanf(" %[^\n]", datos.nombre);
+  printf("Ingrese el genero del producto: ");
+  scanf(" %c", &datos.genero);
+  datos.genero = tolower(datos.genero);
   printf("Ingrese el precio del producto: ");
   scanf(" %f", &datos.precioUnidad);
   printf("Categorias validas:\n");
   printf("0 - Pantalones | 1 - Camisetas | 2 - Calzados | "
-         "3 - Ropa Interior | 4 - Accesorios\n");
+      "3 - Ropa Interior | 4 - Sombreros\n");
   printf("Ingrese la categoria del producto: ");
   scanf(" %d", &opcionCategoria);
   printf("Ingrese la cantidad del producto: ");
   scanf(" %d", &datos.cantidad);
+  printf("¿Es ropa para adulto? S/N: ");
+  scanf(" %c", &datoEdad);
+  datoEdad = tolower(datoEdad);
+  if (datoEdad == 's') {
+    datos.paraAdulto = true;
+  } else {
+    datos.paraAdulto = false;
+  }
 
   datos.categoria = opcionCategoria; // Se asigna el valor ingresado
 
@@ -67,7 +79,7 @@ tProducto ingresoDatosProd() {
 void agregarPrimerProducto(tListaProds **pLista, tProducto pDatosProd) {
   if (!listaVacia(*pLista)) {
     printf("La lista no esta vacia. No se puede agregar al informacion"
-           " del producto. Regresando al menu principal.\n");
+        " del producto. Regresando al menu principal.\n");
   } else {
     tListaProds *nuevoProd = (tListaProds *) malloc(sizeof(tListaProds));
     nuevoProd->datosProd = pDatosProd;
@@ -81,7 +93,7 @@ void agregarPrimerProducto(tListaProds **pLista, tProducto pDatosProd) {
 void insertarProdEnFrente(tListaProds **pLista, tProducto pDatosProd) {
   if (listaVacia(*pLista)) {
     printf("La lista esta vacia. Los datos ingresados corresponderan al"
-           " primer producto.\n");
+        " primer producto.\n");
     agregarPrimerProducto(pLista, pDatosProd);
   } else {
     tListaProds *nuevoProd = (tListaProds *) malloc(sizeof(tListaProds));
@@ -96,13 +108,13 @@ void insertarEnK(tListaProds **pLista, tProducto pDatosProd, int k) {
   // Se evalua que el indice pasado no sea un numero negativo
   if (k <= 0) {
     printf("El valor ingresado no es un indice valido."
-           " Volviendo al menu principal.\n");
+        " Volviendo al menu principal.\n");
     return;
   }
 
   if (listaVacia(*pLista)) {
     printf("La lista de ropa esta vacia. Los datos ingresados"
-           " corresponderan al primer producto.\n");
+        " corresponderan al primer producto.\n");
     agregarPrimerProducto(pLista, pDatosProd);
   } else {
     tListaProds *nuevoProd, *recorrerLista;
@@ -126,7 +138,7 @@ void insertarEnK(tListaProds **pLista, tProducto pDatosProd, int k) {
       // se muestra un mensaje de error y se sale de la funcion
       if (recorrerLista == NULL) {
         printf("El valor ingresado no existe como indice dentro de la lista."
-               " Regresando al menu principal.\n");
+            " Regresando al menu principal.\n");
         return;
       }
 
@@ -143,7 +155,7 @@ void insertarEnK(tListaProds **pLista, tProducto pDatosProd, int k) {
 void agregarProdFinal(tListaProds **pLista, tProducto pDatosProd) {
   if (listaVacia(*pLista)) {
     printf("La lista de ropa esta vacia. Los datos ingresados"
-           " corresponderan al primer producto.\n");
+        " corresponderan al primer producto.\n");
     agregarPrimerProducto(pLista, pDatosProd);
   } else {
     tListaProds *agregarFinal, *recorrerLista;
@@ -184,7 +196,7 @@ int ingresoK() {
 void agregarNuevoProd(tListaProds **pLista, tProducto pDatosProd) {
   if (listaVacia(*pLista)) {
     printf("\nLa lista de ropa esta vacia. Los datos ingresados"
-           " corresponderan al primer producto de la lista.\n");
+        " corresponderan al primer producto de la lista.\n");
     agregarPrimerProducto(pLista, pDatosProd);
   } else {
     int opcion;
@@ -194,7 +206,7 @@ void agregarNuevoProd(tListaProds **pLista, tProducto pDatosProd) {
       scanf(" %d", &opcion);
       if ((opcion <= 0) || (opcion >= 5)) {
         printf("El valor ingresado no corresponde a ninguna de las operaciones"
-               " enumeradas. Intente de nuevo.\n");
+            " enumeradas. Intente de nuevo.\n");
       }
     }while ((opcion <= 0) || (opcion >= 5));
     switch (opcion) {
@@ -254,7 +266,7 @@ void eliminarEnK(tListaProds **pLista, int k) {
       // sean NULL para que no de problemas al momento de conectar
       if ((recorrerLista == NULL) || (recorrerLista->siguiente == NULL)) {
         printf("El valor ingresado no existe como indice dentro de la lista."
-               " Regresando al menu principal.\n");
+            " Regresando al menu principal.\n");
         return;
       }
 
@@ -314,7 +326,7 @@ void eliminarProd(tListaProds **pLista) {
       scanf(" %d", &opcion);
       if ((opcion <= 0) || (opcion >= 5)) {
         printf("El valor ingresado no corresponde a ninguna de las operaciones"
-               " enumeradas. Intente de nuevo.\n");
+            " enumeradas. Intente de nuevo.\n");
       }
     }while ((opcion <= 0) || (opcion >= 5));
     switch (opcion) {
@@ -353,11 +365,28 @@ const char* mostrarCategoria(tCategoria pNombreCategoria) {
       return "Ropa Interior";
       break;
     case 4:
-      return "Accesorios";
+      return "Sombreros";
       break;
     default:
       return "CATEGORIA INVALIDA";
       break;
+  }
+}
+
+// Y se crea una funcion auxiliar para mostrar el genero de la prenda
+const char *mostrarGenero(char pGenero) {
+  switch (pGenero) {
+    case 'h':
+      return "Hombres";
+      break;
+    case 'm':
+      return "Mujeres";
+      break;
+    case 'x':
+      return "Unisex";
+      break;
+    default:
+      return "Valor Invalido.\n";
   }
 }
 
@@ -368,11 +397,17 @@ void mostrarListaProds(tListaProds *pLista) {
     tListaProds *recorrerLista = pLista;
     printf("\n\n === Mostrando Lista de ropa ===\n\n");
     while (recorrerLista != NULL) {
-      printf("Nombre del Producto: %s\n", recorrerLista->datosProd.nombre);
+      // AGREGAR UN TERNARIO PARA EL GENERO: OPCIONES M - mujer | H - hombre | X - unisex
+      printf("Genero del Producto: %s\n",
+          mostrarGenero(recorrerLista->datosProd.genero));
       printf("Precio del producto: %.2f\n",
           recorrerLista->datosProd.precioUnidad);
       printf("Categoria del producto: %s\n",
-             mostrarCategoria(recorrerLista->datosProd.categoria));
+          mostrarCategoria(recorrerLista->datosProd.categoria));
+      printf("Es para adulto: %s\n",
+          (recorrerLista->datosProd.paraAdulto == true) ? "Si" : "No");
+      printf("Cantidad de unidades del producto: %d\n",
+          recorrerLista->datosProd.cantidad);
       printf("\n");
       recorrerLista = recorrerLista->siguiente;
     }
@@ -387,7 +422,7 @@ void guardarLista(tListaProds *pLista) {
     return;
   }
 
-  ropa = fopen("ropa.dat", "ab");
+  ropa = fopen("archivoRopas.dat", "ab");
   if (ropa == NULL) {
     printf("\nNo se pudo abrir el archivo de la lista de ropa.\n");
     exit(EXIT_FAILURE);
