@@ -1,0 +1,37 @@
+GESTOR DE STOCK DE INDUMENTARIA
+================================
+
+FUNCIONAMIENTO GENERAL DEL PROGRAMA
+  Este programa gestiona el inventario de una tienda de ropa mediante una lista enlazada en memoria,
+  donde cada producto almacena su género, precio, categoría, cantidad y público (adulto o niño).
+  Permite administrar los productos de forma dinámica, guardarlos en un archivo binario 'archivoRopas.dat'
+  y generar reportes estadísticos mediante corte de control.
+
+OPCIONES DEL MENÚ PRINCIPAL
+
+1. Agregar producto al stock.
+  Solicita los datos de una prenda (género, precio, categoría, cantidad y si es para adulto)
+  y la incorpora a la lista enlazada. Si la lista ya contiene elementos, permite insertarla al frente,
+  en una posición específica (k) o al final.
+
+2. Eliminar producto del stock.
+  Permite quitar una prenda de la lista enlazada siempre que existan productos cargados.
+  El usuario puede elegir eliminar el primer elemento, el de una posición específica (k)
+  o el último de la lista.
+
+3. Mostrar lista de productos.
+  Recorre toda la lista enlazada en memoria y muestra en pantalla los detalles de cada prenda
+  cargada. Si la lista se encuentra vacía, informa al usuario que no hay registros para mostrar.
+
+4. Guardar lista en archivo (.dat).
+  Crea o sobrescribe el archivo binario 'archivoRopas.dat' volcando todos los productos
+  almacenados actualmente en la lista enlazada.
+  Esto permite conservar el inventario en disco para su posterior análisis en el informe.
+
+5. Mostrar Informe del stock.
+  Lee los registros desde 'archivoRopas.dat' aplicando un corte de control por género y grupo de edad.
+  Muestra el detalle de las prendas junto con totales por edad, género y categoría,
+  además de indicar qué producto tiene menor stock para reponer.
+
+6. Salir del menu y terminar ejecucion del programa.
+  Finaliza la ejecución del menú principal y cierra el programa de forma inmediata.

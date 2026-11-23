@@ -48,6 +48,7 @@ tProducto ingresoDatosProd() {
   int opcionCategoria; // Necesario para el enum
   char datoEdad;
 
+  printf("Generos disponibles: H - M - X\n");
   printf("Ingrese el genero del producto: ");
   scanf(" %c", &datos.genero);
   datos.genero = tolower(datos.genero);

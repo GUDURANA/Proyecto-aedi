@@ -35,7 +35,8 @@
 #include <stdbool.h>
 
 #define MAX 51
-#define LEYENDA "Reponer stock de: "
+#define LEYENDA "\nReponer stock de: "
+#define SEPARADOR "---------------------------------------------------------------\n"
 // * mostrar el contenido del archivo
 // * mostrar total de archivoProds por categoria
 // * mostrar total de archivoProds en la lista
@@ -100,7 +101,8 @@ void inicializar() {
 
   printf("\n\n=== INFORME DE STOCK ===\n\n");
   printf("Informacion del stock:\n");
-  printf("Genero:\tCategoria:\tCantidad en el stock:\tPrecio x Unidad:\n");
+  printf("%-10s %-16s %-22s %-18s\n",
+      "Genero:", "Categoria:", "Cantidad en el Stock:", "Precio x Unidad");
 
   // Se inician los contadores y acumuladores globales en 0
   cantTotalRopaH = 0;
@@ -126,13 +128,8 @@ void inicializar() {
 
 void inicioCorte() {
   // se inician los contadores y acumuladores para el producto en 0
-
   totalRopaAdultoEnLote = 0;
   totalRopaNinioEnLote = 0;
-
-  cantUnidadesRopaH = 0;
-  cantUnidadesRopaM = 0;
-  cantUnidadesRopaX = 0;
 }
 
 void procesarRegistro() {
@@ -184,7 +181,7 @@ void procesarRegistro() {
   }
 
   // Se muestran los datos del producto
-  printf("%c\t\t%s\t%d\t%.2f\n",
+  printf("%-10c %-16s %-22d $%.2f\n",
       producto.genero,
       // Se usa la misma funcion auxiliar que en lista.h para mostrar el nombre
       mostrarCategoria(producto.categoria),
@@ -205,25 +202,15 @@ void finCorte() {
       break;
   }
 
-  printf("Cantidad de Unidades de Ropa %s: %d\n",
-      mostrarGenero(campoControlAnt.genero),
-      // se usa un ternario para saber que subtotal mostrar
-      (campoControlAnt.genero == 'h') ? cantTotalRopaH :
-      (campoControlAnt.genero == 'm') ? cantTotalRopaM :
-      cantTotalRopaX);
-  printf("Cantidad de ropa para %s en el lote: %d\n",
-      (campoControlAnt.paraAdulto == true) ? "Adultos" : "Ninios",
-      (campoControlAnt.paraAdulto == true) ? totalRopaAdultoEnLote :
-      totalRopaNinioEnLote);
-
   campoControlAnt = producto;
 }
 
 void procesarArchivo() {
   while (!feof(archivoProds)) {
     inicioCorte();
-    while ((!feof(archivoProds) &&
-          (campoControlAnt.genero == producto.genero))) {
+    while ((!feof(archivoProds)) &&
+          (campoControlAnt.genero == producto.genero) &&
+          (campoControlAnt.paraAdulto == producto.paraAdulto)) {
       procesarRegistro();
       fread(&producto, sizeof(tProducto), 1, archivoProds);
     }
@@ -232,16 +219,21 @@ void procesarArchivo() {
 }
 
 void finalizar() {
-  printf("Total de lotes por edad:\n");
+  printf("\nTotal de lotes por edad:\n");
   printf("Adultos: %d\n", totalLotesAdulto);
   printf("Ninios: %d\n", totalLotesNinio);
 
-  printf("Cantidad total de productos por genero:\n");
+  printf("\nCantidad total de productos por genero:\n");
   printf("Hombres: %d\n", cantTotalRopaH);
   printf("Mujeres: %d\n", cantTotalRopaM);
   printf("Unisex: %d\n", cantTotalRopaX);
 
-  printf("Cantidad total de Unidades por Categoria:\n");
+  printf("\nCantidad de unidades por genero:\n");
+  printf("Hombres: %d\n", cantUnidadesRopaH);
+  printf("Mujeres: %d\n", cantUnidadesRopaM);
+  printf("Unisex: %d\n", cantUnidadesRopaX);
+
+  printf("\nCantidad total de Unidades por Categoria:\n");
   printf("Pantalones: %d\n", totalPantalones);
   printf("Camisetas: %d\n", totalCamisetas);
   printf("Calzados: %d\n", totalcalzados);
@@ -252,6 +244,8 @@ void finalizar() {
       LEYENDA,
       mostrarCategoria(prodMinimo.categoria),
       mostrarGenero(prodMinimo.genero));
+  printf("%s", SEPARADOR);
+
   fclose(archivoProds);
 }
 
